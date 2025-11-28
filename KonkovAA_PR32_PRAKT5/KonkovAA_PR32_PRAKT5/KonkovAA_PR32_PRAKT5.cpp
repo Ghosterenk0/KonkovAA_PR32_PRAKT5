@@ -1,78 +1,90 @@
 ﻿#include <iostream>
 #include <cstdlib>
-using namespace std;
-
-struct Node {
-    int data;
-    Node* next;
-    Node* prev;
-
-    Node(int value) : data(value), next(nullptr), prev(nullptr) {}
-};
-
 class DoublyLinkedList {
+	struct Node {
+		int data;
+		Node* prev;
+		Node* next;
 
-    Node* head = nullptr;
-    Node* tail = nullptr;
-    
-
+		Node(int Data) : data(Data), prev(nullptr), next(nullptr) {}
+	};
+	Node* head;
+	Node* tail;
 public:
+	DoublyLinkedList() : head(nullptr), tail(nullptr) {}
 
-    void Push_front(int value) {
-        Node* nodeNew = new Node(value);
+	void push_front(int value) {
+		Node* node = new Node(value);
         if (head != nullptr) {
-            nodeNew->next = head;
-            nodeNew->prev = nodeNew;
-            head = nodeNew;
+            node->next = head;
+            head->prev = node;
+            head = node;
         }
-    }
-    void Push_back(int value) {
-        Node* nodeNew = new Node(value);
+        else {
+            head = node;
+        }
+	}
+    void push_back(int value) {
+        Node* node = new Node(value);
         if (tail != nullptr) {
-            nodeNew->prev = tail;
-            nodeNew->next = nodeNew;
-            tail = nodeNew;
+            node->prev = tail;
+            tail->next = node;
+            tail = node;
+        }
+        else {
+            head = tail = node;
         }
     }
-    void Pop_front() {
-        
-    }
-    void Pop_back() {
 
+    void pop_front() {
+        Node* node;
+        node = head->next;
+        delete head;
+        node->prev = nullptr;
+        head = node;
     }
-    void Sort() {
-
+    void pop_back() {
+        Node* node;
+        node = tail->prev;
+        delete tail;
+        node->next = nullptr;
+        tail = node;
     }
-    void Remove_duplicates() {
 
-    }
-    void Display() {
-
+    void display() {
+        Node* node = head;
+        while (node != nullptr){
+            std::cout << node->data << " ";
+            node = node->next;
+        };
     }
 };
-    
-void Menu() {
-    cout << "1. Добавить элемент в начало";
-    cout << "2. Добавить элемент в конец";
-    cout << "3. Удалить элемент с начало";
-    cout << "4. Удалить элемент с конца";
-    cout << "5. Отобразить список";
-    cout << "6. Сортировать список";
-    cout << "7. Удалить дубликаты";
-    cout << "8. Выйти";
+
+void Menu() 
+{
+    std::cout << "1. Добавить элемент в начало" << std::endl;
+    std::cout << "2. Добавить элемент в конец" << std::endl;
+    std::cout << "3. Удалить элемент с начало" << std::endl;
+    std::cout << "4. Удалить элемент с конца" << std::endl;
+    std::cout << "5. Отобразить список" << std::endl;
+    std::cout << "6. Сортировать список" << std::endl;
+    std::cout << "7. Удалить дубликаты" << std::endl;
+    std::cout << "8. Выйти" << std::endl;
 }
 
 int main()
 {
+    setlocale(LC_ALL, "ru");
     bool f = true;
+    DoublyLinkedList list;
     while (f != false) {
-        system("cls");
         Menu();
         int user;
-        cin >> user;
+        std::cin >> user;
         switch (user)
         {
         case 1:
+            list.push_front(1);
             break;
         case 2:
             break;
@@ -81,6 +93,7 @@ int main()
         case 4:
             break;
         case 5:
+            list.display();
             break;
         case 6:
             break;
@@ -90,8 +103,9 @@ int main()
             f = false;
             break;
         default:
-             cout << "Некорректно выбранное действие";
-             break;
-        }   
+            std::cout << "Некорректно выбранное действие" << std::endl;
+            break;
+        }
     }
 }
+
